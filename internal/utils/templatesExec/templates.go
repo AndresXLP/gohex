@@ -5,8 +5,8 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/andresxlp/gohex/enums"
-	templ "github.com/andresxlp/gohex/utils/templates"
+	"github.com/andresxlp/gohex/internal/enums"
+	templ "github.com/andresxlp/gohex/internal/utils/templates"
 )
 
 var (

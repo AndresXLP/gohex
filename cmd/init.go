@@ -6,7 +6,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/andresxlp/gohex/services"
+	"github.com/andresxlp/gohex/internal/app"
+	"github.com/andresxlp/gohex/internal/infra/handler"
 	"github.com/spf13/cobra"
 )
 
@@ -18,23 +19,24 @@ var (
 hexagonal structure of the microservice`,
 		Example: `gohex init --path /api/gohex --module github.com/andresxlp/gohex`,
 		Run: func(cmd *cobra.Command, args []string) {
-			services.Init(path, module)
+			handler.StarCreate(&app.Service{})
+		},
+		PostRun: func(cmd *cobra.Command, args []string) {
+			handler.StartGoModule(&app.Service{})
 			fmt.Println(`Initial Hexagonal Struct Created Successfully.
 
 Don't forget to set the environment variables:
 SERVER_HOST
 SERVER_PORT`)
+
 		},
 	}
-	path   string
-	module string
 )
 
 func init() {
-	initCmd.Flags().StringVarP(&path, "path", "p", "", "REQUIRED: set base path for router. e.g: /api/gohex")
+	initCmd.Flags().StringVarP(&handler.BasePath, "path", "p", "", "REQUIRED: set base path for router. e.g: /api/gohex")
 	initCmd.MarkFlagRequired("path")
-	initCmd.Flags().StringVarP(&module, "module", "m", "", "REQUIRED: set your Module Go. e.g: github.com/andresxlp/gohex")
+	initCmd.Flags().StringVarP(&handler.Module, "module", "m", "", "REQUIRED: set your Module Go. e.g: github.com/andresxlp/gohex")
 	initCmd.MarkFlagRequired("module")
-
 	rootCmd.AddCommand(initCmd)
 }
