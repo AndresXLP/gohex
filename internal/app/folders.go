@@ -1,12 +1,12 @@
-package services
+package app
 
 import (
 	"os"
 
-	"github.com/andresxlp/gohex/enums"
+	"github.com/andresxlp/gohex/internal/enums"
 )
 
-func CreateAllFolders() {
+func (fl *Service) CreateAllFolders() {
 	createFolder(enums.CmdFolder)
 	createFolder(enums.ProvidersFolder)
 	createFolder(enums.ConfigFolder)

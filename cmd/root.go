@@ -10,18 +10,11 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use: "gohex",
-	Example: `  MS FOLDER
-  ├─ cmd 
-  │  └─ providers	
-  ├─ config	
-  └─ internal
-     └─ infra
-        └─ api
-           ├─ handler	
-           └─ router`,
+	Example: `gohex init --path /api/gohex --module github.com/andresxlp/gohex`,
+	Args:    cobra.ExactArgs(1),
 	Long: `Gohex creates the files and folders to implement the hexagonal
 architecture in a microservice with Go.`,
+	Use: "gohex",
 }
 
 func Execute() {

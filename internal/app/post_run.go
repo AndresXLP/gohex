@@ -1,13 +1,11 @@
-package services
+package app
 
 import (
 	"log"
 	"os/exec"
 )
 
-func Init(path, module string) {
-	CreateAllFolders()
-	CreateAllFiles(path, module)
+func (fl *Service) InitGoModule(module string) {
 	launchGoModInitAndGoModTidy(module)
 }
 
