@@ -4,7 +4,7 @@ Gohex is a CLI application that helps you create the initial files and folders t
 # Usage
 It can be installed by running:
 
-`go install github.com/andresxlp/gohexa@latest`
+`go install github.com/andresxlp/gohex@latest`
 
 ```
 Usage:
