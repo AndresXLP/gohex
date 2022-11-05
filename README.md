@@ -12,7 +12,7 @@ It can be installed by running:
 Create the folder where you are going to host the repository,
 we recommend that you use your $GOPATH
 
-![image](https://github.com/AndresXLP/gohex/blob/main/gohex-usage.png)
+![image](https://github.com/AndresXLP/gohex/blob/main/gohex-usage.gif)
 
 ---
 
