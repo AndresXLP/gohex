@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 )
@@ -10,12 +11,12 @@ func (fl *Service) InitGoModule(module string) {
 }
 
 func launchGoModInitAndGoModTidy(module string) {
-	_, err := exec.Command("go", "mod", "init", module).Output()
-	if err != nil {
-		log.Fatal("error mod ", err)
+	if err := exec.Command("go", "mod", "init", module).Run(); err != nil {
+		log.Fatal("Error init", err)
 	}
-	_, err = exec.Command("go", "mod", "tidy").Output()
-	if err != nil {
-		log.Fatal("error tidy ", err)
+
+	if err := exec.Command("go", "mod", "tidy").Run(); err != nil {
+		log.Fatal("Error tidy ", err)
 	}
+	fmt.Println("Go mod init and Go mod tidy executed successfully")
 }
