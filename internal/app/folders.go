@@ -6,15 +6,21 @@ import (
 	"github.com/andresxlp/gohex/internal/enums"
 )
 
-func (fl *Service) CreateAllFolders() {
-	createFolder(enums.CmdFolder)
-	createFolder(enums.ProvidersFolder)
-	createFolder(enums.ConfigFolder)
-	createFolder(enums.InternalFolder)
-	createFolder(enums.InfraFolder)
-	createFolder(enums.ApiFolder)
-	createFolder(enums.HandlerFolder)
-	createFolder(enums.RouterFolder)
+var folders = []string{
+	enums.CmdFolder,
+	enums.ProvidersFolder,
+	enums.ConfigFolder,
+	enums.InternalFolder,
+	enums.InfraFolder,
+	enums.ApiFolder,
+	enums.HandlerFolder,
+	enums.RouterFolder,
+}
+
+func (s *Service) CreateAllFolders() {
+	for _, folder := range folders {
+		createFolder(folder)
+	}
 }
 
 func createFolder(folder string) {

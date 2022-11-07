@@ -1,70 +1,65 @@
 package app
 
 import (
-	"fmt"
+	"errors"
 	"io/ioutil"
+	"os"
 
-	enums2 "github.com/andresxlp/gohex/internal/enums"
+	"github.com/andresxlp/gohex/internal/enums"
 	"github.com/andresxlp/gohex/internal/utils/templatesExec"
 )
 
 type Service struct{}
 
-func (fl *Service) CreateAllFiles(module, basePath string) {
-	createMainFile(module)
-	createDiFile(module)
-	createConfigFile(module)
-	createHealthFile()
-	createRouterFile(module, basePath)
+var (
+	files = []string{enums.MainFile, enums.DiFile, enums.ConfigFile, enums.HealthFile, enums.RouterFile, enums.GoModFile, enums.GoSumFile}
+)
+
+func (s *Service) CreateAllFiles(module, basePath string) {
+	for _, file := range files[:5] {
+		createFiles(file, module, basePath)
+	}
 }
 
-func createMainFile(module string) {
-	main := fmt.Sprintf(enums2.Separator, enums2.CmdFolder, enums2.MainFile)
-	createFile(main, templatesExec.GetTemplateWhitValues(enums2.GetMainFile, dataTemplate(module)))
+func (s *Service) FileExisting() error {
+	for _, file := range files {
+		if verifyExistingFile(file) {
+			return errors.New("The File " + file + " already exist.")
+		}
+	}
+	return nil
 }
 
-func createDiFile(module string) {
-	di := fmt.Sprintf(enums2.Separator, enums2.ProvidersFolder, enums2.DiFile)
-
-	createFile(di, templatesExec.GetTemplateWhitValues(enums2.GetDiFile, dataTemplate(module)))
-}
-
-func createConfigFile(module string) {
-	config := fmt.Sprintf(enums2.Separator, enums2.ConfigFolder, enums2.ConfigFile)
-
-	createFile(config, templatesExec.GetTemplateWhitValues(enums2.GetConfigFile, dataTemplate(module)))
-}
-
-func createHealthFile() {
-	health := fmt.Sprintf(enums2.Separator, enums2.HandlerFolder, enums2.HealthFile)
-	createFile(health, templatesExec.GetTemplateWhitValues(enums2.GetHealthFile, map[string]interface{}{}))
-}
-
-func createRouterFile(module, basePath string) {
-	router := fmt.Sprintf(enums2.Separator, enums2.RouterFolder, enums2.RouterFile)
-
-	createFile(router, templatesExec.GetTemplateWhitValues(enums2.GetRouterFile, dataTemplate(module, basePath)))
-}
-
-func dataTemplate(data ...string) map[string]interface{} {
-	var dataMap = map[string]interface{}{}
-
-	switch len(data) {
-	case 1:
-		dataMap[enums2.Module] = data[0]
-		break
-	case 2:
-		dataMap[enums2.Module] = data[0]
-		dataMap[enums2.BasePath] = data[1]
-		break
+func createFiles(fileName, module, basePath string) {
+	queryTempl := map[string]enums.TemplateLabel{
+		files[0]: enums.GetMainFile,
+		files[1]: enums.GetDiFile,
+		files[2]: enums.GetConfigFile,
+		files[3]: enums.GetHealthFile,
+		files[4]: enums.GetRouterFile,
 	}
 
+	createFile(fileName, templatesExec.GetTemplateWhitValues(queryTempl[fileName], dataTemplate(module, basePath)))
+}
+
+func dataTemplate(module, basePath string) map[string]interface{} {
+	dataMap := map[string]interface{}{
+		enums.Module:   module,
+		enums.BasePath: basePath,
+	}
 	return dataMap
 }
 
-func createFile(rutaDestino string, data string) {
-	err := ioutil.WriteFile(rutaDestino, []byte(data), 0644)
+func createFile(fileName string, data string) {
+	err := ioutil.WriteFile(fileName, []byte(data), 0644)
 	if err != nil {
 		panic(err)
 	}
+}
+
+func verifyExistingFile(fileName string) bool {
+	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
+		return true
+	}
+	return false
 }
