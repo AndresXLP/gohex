@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/andresxlp/gohex/internal/app"
+	"github.com/andresxlp/gohex/cmd/enums"
 	"github.com/andresxlp/gohex/internal/infra/handler"
 	"github.com/spf13/cobra"
 )
@@ -18,24 +18,26 @@ var (
 		Short: "Initializes the creation of the files and folders.",
 		Long: `Initializes the creation of the files and folders necessary for the 
 hexagonal structure of the microservice`,
-		Example: `gohex init --path /api/hexa --module github.com/andresxlp/hexa-ms`,
+		Example: `gohex init --path /api/hexa --import github.com/andresxlp/hexa-ms`,
 		Run: func(cmd *cobra.Command, args []string) {
-			handler.ProgressBarFolderAndFile()
-			handler.StarCreate(&app.Service{})
-		},
-		PostRun: func(cmd *cobra.Command, args []string) {
-			fmt.Print(`Initial Hexagonal Struct Created Successfully.
-
-Don't forget to set the environment variables:
-SERVER_HOST
-SERVER_PORT
-
-`)
-			if mod[0] {
-				handler.ProgressBarGoModule()
-				handler.StartGoModule(&app.Service{})
+			if r := handler.VerifyFilesAndFolderExisting(); r.Err != nil {
+				fmt.Println(r.Err)
 			} else {
-				fmt.Println("Don't forget execute go mod init and go mod tidy")
+				handler.CreateFolderAndFile()
+				if mod[0] {
+					r := handler.ExecuteGoModule()
+					if r.Err != nil {
+						fmt.Println(r.Err.Error())
+					} else {
+						fmt.Print(enums.SuccessfullyCreated)
+						fmt.Print("\n\n")
+						fmt.Println(enums.SuccessfullyAndGoModuleTrue)
+					}
+				} else {
+					fmt.Print(enums.SuccessfullyCreated)
+					fmt.Print("\n\n")
+					fmt.Println(enums.SuccessfullyAndGoModuleFalse)
+				}
 			}
 		},
 	}

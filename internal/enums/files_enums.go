@@ -1,9 +1,11 @@
 package enums
 
 const (
-	MainFile   = "main.go"
-	DiFile     = "di.go"
-	ConfigFile = "config.go"
-	HealthFile = "health.go"
-	RouterFile = "router.go"
+	MainFile   = CmdFolder + "/main.go"
+	DiFile     = ProvidersFolder + "/di.go"
+	ConfigFile = ConfigFolder + "/config.go"
+	HealthFile = HandlerFolder + "/health.go"
+	RouterFile = RouterFolder + "/router.go"
+	GoModFile  = "go.mod"
+	GoSumFile  = "go.sum"
 )
