@@ -1,36 +1,27 @@
 package handler
 
 import (
+	"log"
+	"os/exec"
+	"strings"
+
 	apps "github.com/andresxlp/gohex/internal/app"
 )
 
 var (
-	app      *apps.Service
-	BasePath string
-	Module   string
+	app *apps.Service
 )
 
 type AnyError struct {
 	Err error
 }
 
-func VerifyFilesAndFolderExisting() (r AnyError) {
-	outputChannel := make(chan AnyError)
-	go func() {
-		if err := app.FileExisting(); err != nil {
-			outputChannel <- AnyError{err}
-		} else {
-			outputChannel <- AnyError{nil}
-		}
-	}()
-	app.ProgressBarVerifyFilesAndFolder()
-	return <-outputChannel
-}
+func CreateFolderAndFile(module string) {
+	pathModule := getModule(module)
 
-func CreateFolderAndFile() {
 	go func() {
 		app.CreateAllFolders()
-		app.CreateAllFiles(Module, BasePath)
+		app.CreateAllFiles(pathModule)
 	}()
 	app.ProgressBarFilesAndFolders()
 }
@@ -46,4 +37,25 @@ func ExecuteGoModule() (r AnyError) {
 	}()
 	app.ProgressBarGoModules()
 	return <-outputChannel
+}
+
+func getModule(module string) string {
+	var pathModule string
+	if module == "" {
+		bytes, err := exec.Command("pwd").CombinedOutput()
+		if err != nil {
+			log.Fatal(err)
+		}
+		str := string(bytes)
+		sliceString := strings.Split(str, "/")
+		var pwd []string
+		for i, s := range sliceString {
+			if s == "src" {
+				pwd = sliceString[i+1:]
+				break
+			}
+		}
+		pathModule = strings.Replace(strings.Join(pwd, "/"), "\n", "", 1)
+	}
+	return pathModule
 }

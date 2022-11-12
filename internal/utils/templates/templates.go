@@ -125,7 +125,7 @@ func New(server *echo.Echo) *Router {
 }
 
 func (r *Router) Init() {
-	basePath := r.server.Group("{{.basePath}}")
+	basePath := r.server.Group("/api/microservice") //customize your basePath 
 	basePath.GET("/health", handler.HealthCheck)
 }
 `

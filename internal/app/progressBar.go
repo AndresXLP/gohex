@@ -1,35 +1,11 @@
 package app
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/k0kubun/go-ansi"
 	"github.com/schollz/progressbar/v3"
 )
-
-func (s *Service) ProgressBarVerifyFilesAndFolder() {
-	fmt.Println("")
-	time.Sleep(500 * time.Millisecond)
-	bar := progressbar.NewOptions(1000,
-		progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
-		progressbar.OptionEnableColorCodes(true),
-		progressbar.OptionSetPredictTime(false),
-		progressbar.OptionClearOnFinish(),
-		progressbar.OptionSetDescription("  [red][1/1]Check if files and folders exist...[reset] "),
-		progressbar.OptionSetTheme(progressbar.Theme{
-			Saucer:        "[red]=[reset]",
-			SaucerHead:    "[red]>[reset]",
-			SaucerPadding: " ",
-			BarStart:      "[",
-			BarEnd:        "]",
-		}),
-	)
-	for i := 0; i < 1000; i++ {
-		bar.Add(1)
-		time.Sleep(1 * time.Millisecond)
-	}
-}
 
 func (s *Service) ProgressBarFilesAndFolders() {
 	time.Sleep(500 * time.Millisecond)
