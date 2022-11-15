@@ -10,7 +10,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Example: `gohex init --path /api/hexa --import github.com/andresxlp/hexa-ms`,
+	Example: `gohex init`,
 	Args:    cobra.ExactArgs(1),
 	Long: `Gohex creates the files and folders to implement the hexagonal
 architecture in a microservice with Go.`,
