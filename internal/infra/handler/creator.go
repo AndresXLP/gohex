@@ -26,10 +26,10 @@ func CreateFolderAndFile(module string) {
 	app.ProgressBarFilesAndFolders()
 }
 
-func ExecuteGoModule() (r AnyError) {
+func ExecuteGoModule(module string) (r AnyError) {
 	outputChannel := make(chan AnyError)
 	go func() {
-		if err := app.InitGoModule(); err != nil {
+		if err := app.InitGoModule(module); err != nil {
 			outputChannel <- AnyError{err}
 		} else {
 			outputChannel <- AnyError{nil}
@@ -41,21 +41,24 @@ func ExecuteGoModule() (r AnyError) {
 
 func getModule(module string) string {
 	var pathModule string
-	if module == "" {
-		bytes, err := exec.Command("pwd").CombinedOutput()
-		if err != nil {
-			log.Fatal(err)
-		}
-		str := string(bytes)
-		sliceString := strings.Split(str, "/")
-		var pwd []string
-		for i, s := range sliceString {
-			if s == "src" {
-				pwd = sliceString[i+1:]
-				break
-			}
-		}
-		pathModule = strings.Replace(strings.Join(pwd, "/"), "\n", "", 1)
+	if module != "" {
+		return module
 	}
+
+	bytes, err := exec.Command("pwd").CombinedOutput()
+	if err != nil {
+		log.Fatal(err)
+	}
+	str := string(bytes)
+	sliceString := strings.Split(str, "/")
+	var pwd []string
+	for i, s := range sliceString {
+		if s == "src" {
+			pwd = sliceString[i+1:]
+			break
+		}
+	}
+	pathModule = strings.Replace(strings.Join(pwd, "/"), "\n", "", 1)
+
 	return pathModule
 }
