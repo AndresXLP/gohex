@@ -6,7 +6,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os/exec"
 	"regexp"
 
 	"github.com/andresxlp/gohex/cmd/enums"
@@ -25,7 +24,7 @@ hexagonal structure of the microservice`,
 		Run: func(cmd *cobra.Command, args []string) {
 			module := projectInGOPATH()
 			handler.CreateFolderAndFile(module)
-			r := handler.ExecuteGoModule()
+			r := handler.ExecuteGoModule(module)
 			if r.Err != nil {
 				fmt.Println(r.Err.Error())
 			} else {
@@ -51,7 +50,6 @@ func projectInGOPATH() string {
 
 	validate := func(res string) error {
 		if !yn.MatchString(res) {
-			exec.Command("clear").Run()
 			return errors.New("invalid option only [Y/n]")
 		}
 		return nil
@@ -64,7 +62,7 @@ func projectInGOPATH() string {
 	}
 
 	prompt := promptui.Prompt{
-		Label:     `your project is inside the GOPATH? - e.g: "$GOPATH/src/github.com/andresxlp/hexa-ms" [y/n] `,
+		Label:     `your project is inside the GOPATH? [y/n] `,
 		Validate:  validate,
 		Templates: template,
 	}
@@ -73,7 +71,6 @@ func projectInGOPATH() string {
 		fmt.Printf("error in prompt %v\n", err.Error())
 	}
 	module := ""
-	exec.Command("clear").Run()
 	if n.MatchString(res) {
 		prompt = promptui.Prompt{
 			Label: "type your module project ",
