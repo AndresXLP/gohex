@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"os/exec"
+	"time"
 )
 
 func (s *Service) InitGoModule(module string) error {
@@ -14,18 +15,13 @@ func (s *Service) InitGoModule(module string) error {
 }
 
 func launchGoModInitAndGoModTidy(module string) ([]byte, error) {
-	if module == "" {
-		res, err := exec.Command("go", "mod", "init").CombinedOutput()
-		if err != nil {
-			return res, err
-		}
-	} else {
-		res, err := exec.Command("go", "mod", "init", module).CombinedOutput()
-		if err != nil {
-			return res, err
-		}
+	res, err := exec.Command("go", "mod", "init", module).CombinedOutput()
+	if err != nil {
+		return res, err
 	}
-	res, err := exec.Command("go", "mod", "tidy").CombinedOutput()
+
+	time.Sleep(500 * time.Millisecond)
+	res, err = exec.Command("go", "mod", "tidy").CombinedOutput()
 	if err != nil {
 		return res, err
 	}

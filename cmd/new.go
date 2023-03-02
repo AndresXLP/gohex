@@ -17,8 +17,12 @@ func NewCmd() *cobra.Command {
 		Short: "Initializes the creation of the files and folders.",
 		Long: `Initializes the creation of the files and folders necessary for the 
 hexagonal structure of the microservice`,
-		Example: `gohex new 'package-name'`,
+		Example: `gohex new { package-name }'`,
 		Run: func(command *cobra.Command, args []string) {
+			if len(args) == 0 {
+				fmt.Println("package name argument are required - gohex new { package-name }")
+				return
+			}
 			module := args[0]
 			handler.CreateFolderAndFile(module)
 			r := handler.ExecuteGoModule(module)

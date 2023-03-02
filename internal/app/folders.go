@@ -11,10 +11,20 @@ var folders = []string{
 	enums.ProvidersFolder,
 	enums.ConfigFolder,
 	enums.InternalFolder,
+	enums.AppFolder,
+	enums.ConstantsFolder,
+	enums.DomainFolder,
+	enums.DTOFolder,
+	enums.EntityFolder,
+	enums.PortsFolder,
 	enums.InfraFolder,
+	enums.AdaptersFolder,
 	enums.ApiFolder,
+	enums.ResourcesFolder,
 	enums.HandlerFolder,
+	enums.MiddlewareFolder,
 	enums.RouterFolder,
+	enums.GroupsFolder,
 }
 
 func (s *Service) CreateAllFolders() {
