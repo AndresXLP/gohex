@@ -9,11 +9,14 @@ It can be installed by running:
 
 ---
 # Usage
-Create the folder where you are going to host the repository,
-we recommend that you use your $GOPATH
-
-![image](https://github.com/AndresXLP/gohex/blob/main/gohex-usage.gif)
-
+1. Create a folder where you are going to work and enter it:
+   - `$ mkdir myProyect && cd $_`
+2. Execute gohex command:
+   - `$ gohex new myProyect`
+3. Set necessary env's to run  `SERVER_HOST` `SERVER_PORT`
+   - `If you develop in IntelliJ or Goland IDE set env in your build configuration`
+   - `If you develop in VSCode create an .env file in your root folder and check the config.go file`
+    
 ---
 
 # Structure
