@@ -23,15 +23,24 @@ It can be installed by running:
 This generator has basic structure like this
 ```
 Folder Struct:
-  MS FOLDER
+  ROOT FOLDER
   ├─ cmd
   │  └─ providers
   ├─ config
   └─ internal
+     ├─ app
+     ├─ constants
+     ├─ domain
+     │  ├─ dto
+     │  ├─ entity
+     │  └─ ports
      └─ infra
-        └─ api
-           ├─ handler
-           └─ router
+        ├─ api
+        │  ├─ handler
+        │  ├─ middleware
+        │  └─ router
+        │     └─ groups
+        └─ resource
 ```
 
 ---
